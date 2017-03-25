@@ -1,40 +1,25 @@
-import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
-import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 
 public class Main {
+	
+	static Encryptor encryptor;
+	static Decryptor decryptor;
 
 	public static void main(String[] args) throws InvalidPasswordException, IOException {
+		encryptor = new Encryptor();
+		decryptor = new Decryptor();
+		String[] inputArr = new String[4];
+		inputArr = getInputArr(new Scanner(System.in).nextLine());
+//		encryptor.encrypt(inputArr[0], inputArr[1], inputArr[2], inputArr[3]);
+		decryptor.decrypt(inputArr[0], inputArr[1], inputArr[2], inputArr[3]);
 		
-		//String sourceFile="C:\\Users\\RENT\\Downloads\\example\\JSON.pdf";
-		String sourceFile="C:\\Users\\RENT\\workspace\\PdfNC\\f1.pdf";
-		PDDocument doc = PDDocument.load(new File(sourceFile),"12345");
-		
-		String targetFile="C:\\Users\\RENT\\workspace\\PdfNC\\f2.pdf";
-
-		// Define the length of the encryption key.
-		// Possible values are 40 or 128 (256 will be available in PDFBox 2.0).
-		int keyLength = 128;
-
-		AccessPermission ap = new AccessPermission();
-
-		// Disable printing, everything else is allowed
-		ap.setCanPrint(false);
-
-		// Owner password (to open the file with all permissions) is "12345"
-		// User password (to open the file but with restricted permissions, is empty here) 
-		StandardProtectionPolicy spp = new StandardProtectionPolicy("", "", ap);
-		spp.setEncryptionKeyLength(keyLength);
-		spp.setPermissions(ap);
-		doc.protect(spp);
-		doc.setAllSecurityToBeRemoved(true);
-		doc.save(targetFile);
-		doc.close();
-
+	}
+	
+	public static String[] getInputArr (String input){
+		return input.split(" ");
 	}
 
 }
